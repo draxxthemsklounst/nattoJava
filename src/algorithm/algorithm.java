@@ -1,20 +1,18 @@
 package algorithm;
 
-import java.util.ArrayList;
-import java.util.Random;
 import java.util.Scanner;
 
 public class algorithm {
 	public static void main(String [] args) {
+		
 		algorithm.mainMenu();
+		
 	}
 	
 	private static void mainMenu() {
 		boolean keepGoing = true;
 		Scanner cin = new Scanner(System.in);
-		while(keepGoing)
-		{
-			
+		while(keepGoing) {
 			System.out.println("(1) Search an array\n"
 							+ "(2) Sort an array\n"
 							+ "(3) Hash Table\n"
@@ -25,7 +23,7 @@ public class algorithm {
 				searchingAlgorithms.searchArrayMenu();
 			}
 			else if(choice == 2) {
-				sortingAlgorithms.sortArrayMenu();
+				sortingAlgorithms.sortArrayMenu(cin);//pass in the scanner
 			}
 			else if (choice == 3) {
 				hashTable.hashMenu();
@@ -48,15 +46,11 @@ public class algorithm {
 		}
 		cin.close();
 	}
-	
-	
-	
-	
-	
-	
-
-	
-	
-	
+	public static void guiStart() {
+		gui object = new gui();
+		object.setDefaultCloseOperation(gui.EXIT_ON_CLOSE);
+		object.setSize(1200,800);
+		object.setVisible(true);
+	}
 	
 }

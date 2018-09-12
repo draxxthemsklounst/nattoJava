@@ -1,18 +1,14 @@
 package algorithm;
 
-import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
 public class sortingAlgorithms {
-	public static void sortArrayMenu() {
-		Scanner scanner = new Scanner(System.in);
+	public static void sortArrayMenu(Scanner scanner) {
 		int Which, howMany;
 		
 		System.out.println("How many elements?");
 		howMany = scanner.nextInt();
-		
-		
 		
 		System.out.println("What type of sort would you like to execute?");
 		System.out.println("(1) - Iterative Bubble Sort ");
@@ -65,19 +61,13 @@ public class sortingAlgorithms {
 			sortingAlgorithms.mergeSort(temp, 0, howMany-1);
 			sortingAlgorithms.displayArray(temp, howMany);
 		}
-		scanner.close();
 	}
 	
 	
-	private static void iterativeBubbleSort(int arr[], int howMany)
-	{
-		
-		for(int i = 0; i < howMany - 1; i ++)
-		{
-			for(int j = 0; j < howMany - 1 - i; j++ )
-			{
-				if(arr[j] > arr[j+1])
-				{
+	private static void iterativeBubbleSort(int arr[], int howMany) {
+		for(int i = 0; i < howMany - 1; i ++) {
+			for(int j = 0; j < howMany - 1 - i; j++ ) {
+				if(arr[j] > arr[j+1]) {
 					int temp = arr[j];
 					arr[j] = arr[j+1];
 					arr[j+1] = temp;
@@ -85,8 +75,7 @@ public class sortingAlgorithms {
 			}
 		}
 	}
-	private static void recursiveBubbleSort(int arr[], int howMany)
-	{
+	private static void recursiveBubbleSort(int arr[], int howMany) {
 		if(howMany == 1)
 			return;
 		for(int i = 0; i < howMany-1; i++) {
@@ -149,18 +138,18 @@ public class sortingAlgorithms {
 		int half1 [] = new int[middle-begin+1]; //cloning the two "halves" of input array
 		int half2 [] = new int[end-middle];
 		
-		int tempindex1 = 0;
+		int index1 = 0;
 		for(int i = begin; i < middle+1; i++) { //copying first half and second half into the clones
-			half1[tempindex1] = arr[i];
-			tempindex1++;
+			half1[index1] = arr[i];
+			index1++;
 		}
-		int tempindex2 = 0;
-		for(int j = middle+1; j < end+1; j++) {
-			half2[tempindex2] = arr[j];
-			tempindex2++;
-		}
-		int index1 = 0; //index for each item "transferred" from clone to sorted array
 		int index2 = 0;
+		for(int j = middle+1; j < end+1; j++) {
+			half2[index2] = arr[j];
+			index2++;
+		}
+		index1 = 0; //index for each item "transferred" from clone to sorted array
+		index2 = 0;
 		for(int j = begin; j< end+1; j++) {
 			
 			if(index1 < half1.length && index2 >= half2.length) {
