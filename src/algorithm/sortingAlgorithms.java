@@ -16,7 +16,8 @@ public class sortingAlgorithms {
 		System.out.println("(3) - Selection Sort ");
 		System.out.println("(4) - Iterative Insertion Sort ");
 		System.out.println("(5) - Recursive Insertion Sort ");
-		System.out.println("(6) - Merge Sort ");
+		System.out.println("(6) - Recursive Merge Sort ");
+		System.out.println("(7) - Quicksort ");
 		Which = scanner.nextInt();
 		
 		if(Which == 1) {
@@ -61,9 +62,49 @@ public class sortingAlgorithms {
 			sortingAlgorithms.mergeSort(temp, 0, howMany-1);
 			sortingAlgorithms.displayArray(temp, howMany);
 		}
+		else if(Which ==7) {
+			int temp[] = randArray(howMany);
+			sortingAlgorithms.displayArray(temp, howMany);
+			System.out.println("Sorting...");
+			sortingAlgorithms.quickSort(temp);
+			sortingAlgorithms.displayArray(temp, howMany);
+		}
 	}
 	
+	private static void quickSort(int [] arr) {
+		quickSort(arr,0,arr.length -1);
+	}
+	private static void quickSort(int [] arr, int begin, int end) {
+		if (begin >= end)
+			return;
+		int wall = partition(arr,begin,end);
+		quickSort(arr,begin,wall-1);
+		quickSort(arr,wall,end);
+	}
+	private static int partition(int[] arr, int begin, int end) {
+		
+		int pivot = arr[end];
+		
+		while(begin < end) {
+			if(arr[begin] > pivot && arr[end] <= pivot) {
+				swap(arr,begin,end);
+				begin++;
+				end--;
+			}
+			if(arr[begin] <= pivot)
+				begin++;
+			if( arr[end] > pivot ) 
+				end--; 
+		}
+		return begin;
+	}
 	
+	private static void swap(int[] p, int a, int b) {
+		int c = p[a];
+		p[a] = p[b];
+		p[b] = c;
+	}
+
 	private static void iterativeBubbleSort(int arr[], int howMany) {
 		for(int i = 0; i < howMany - 1; i ++) {
 			for(int j = 0; j < howMany - 1 - i; j++ ) {

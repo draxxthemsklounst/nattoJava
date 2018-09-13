@@ -4,9 +4,7 @@ import java.util.Scanner;
 
 public class algorithm {
 	public static void main(String [] args) {
-		
 		algorithm.mainMenu();
-		
 	}
 	
 	private static void mainMenu() {
