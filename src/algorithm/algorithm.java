@@ -1,10 +1,12 @@
 package algorithm;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 public class algorithm {
-	public static void main(String [] args) {
+	public static void main(String [] args) throws IOException {
 		algorithm.mainMenu();
+		//gui Gui = new gui();
 	}
 	
 	private static void mainMenu() {
