@@ -5,8 +5,8 @@ import java.util.Scanner;
 
 public class algorithm {
 	public static void main(String [] args) throws IOException {
-		algorithm.mainMenu();
-		//gui Gui = new gui();
+		//algorithm.mainMenu();
+		gui Gui = new gui();
 	}
 	
 	private static void mainMenu() {
@@ -46,11 +46,6 @@ public class algorithm {
 		}
 		cin.close();
 	}
-	public static void guiStart() {
-		gui object = new gui();
-		object.setDefaultCloseOperation(gui.EXIT_ON_CLOSE);
-		object.setSize(1200,800);
-		object.setVisible(true);
-	}
+	
 	
 }
