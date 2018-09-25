@@ -1,5 +1,6 @@
 package algorithm;
 
+import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -18,7 +19,7 @@ public class sortingAlgorithms {
 		System.out.println("(5) - Recursive Insertion Sort ");
 		System.out.println("(6) - Recursive Merge Sort ");
 		System.out.println("(7) - Quicksort ");
-		System.out.println("(8) - Timsort ");
+		System.out.println("(8) - Array.Sort (java.util.Arrays) ");
 		Which = scanner.nextInt();
 		
 		if(Which == 1) {
@@ -59,7 +60,7 @@ public class sortingAlgorithms {
 			sortingAlgorithms.displayArray(temp, howMany);
 			System.out.println("Sorting...");
 			float startTime = System.nanoTime();
-			sortingAlgorithms.iterativeInsertionSort(temp, howMany);
+			sortingAlgorithms.iterativeInsertionSort(temp, 0,howMany);
 			float endTime = System.nanoTime();
 			float milliduration = (endTime - startTime) / 1000000; //milliseconds
 			sortingAlgorithms.displayArray(temp, howMany);
@@ -93,6 +94,18 @@ public class sortingAlgorithms {
 			System.out.println("Sorting...");
 			float startTime = System.nanoTime();
 			sortingAlgorithms.quickSort(temp);
+			float endTime = System.nanoTime();
+			float milliduration = (endTime - startTime) / 1000000; //milliseconds
+			sortingAlgorithms.displayArray(temp, howMany);
+			System.out.printf("Execution time: %f milliseconds or %f seconds \n",milliduration,milliduration/1000);
+		}
+		else if(Which ==8) {
+			int temp[] = randArray(howMany);
+			sortingAlgorithms.displayArray(temp, howMany);
+			System.out.println("Sorting...");
+			float startTime = System.nanoTime();
+			//sortingAlgorithms.timSort(temp,howMany);
+			Arrays.sort(temp);
 			float endTime = System.nanoTime();
 			float milliduration = (endTime - startTime) / 1000000; //milliseconds
 			sortingAlgorithms.displayArray(temp, howMany);
@@ -169,9 +182,9 @@ public class sortingAlgorithms {
 			arr[smallestIndex] = swap;
 		}
 	}
-	private static void iterativeInsertionSort(int[] arr, int howMany) {
+	private static void iterativeInsertionSort(int[] arr, int begin, int end) {
 		int sortedIndex;
-		for(int i = 0; i < howMany; i++) {
+		for(int i = begin; i < end; i++) {
 			sortedIndex = i;
 			for(int j = 0; j<sortedIndex; j++) {
 				if(arr[sortedIndex] <= arr[j]) {
@@ -204,7 +217,7 @@ public class sortingAlgorithms {
 			merge(arr,begin,middle,end);
 		}
 	}
-	private static void merge(int[] arr, int begin, int middle, int end) {
+	/*private static void merge(int[] arr, int begin, int middle, int end) {
 		int half1 [] = new int[middle-begin+1]; //cloning the two "halves" of input array
 		int half2 [] = new int[end-middle];
 		
@@ -243,7 +256,84 @@ public class sortingAlgorithms {
 			
 		}
 	}
-
+*/
+	private static void merge(int arr[], int l, int m, int r)
+	{
+	    // original array is broken in two parts
+	    // left and right array
+	    int len1 = m - l + 1;
+	    int len2 = r - m;
+	    int left[] = new int[len1];
+	    int right[] = new int[len2];
+	    for (int i = 0; i < len1; i++)
+	        left[i] = arr[l + i];
+	    for (int i = 0; i < len2; i++)
+	        right[i] = arr[m + 1 + i];
+	 
+	    int i = 0;
+	    int j = 0;
+	    int k = l;
+	 
+	    // after comparing, we merge those two array
+	    // in larger sub array
+	    while (i < len1 && j < len2)
+	    {
+	        if (left[i] <= right[j])
+	        {
+	            arr[k] = left[i];
+	            i++;
+	        }
+	        else
+	        {
+	            arr[k] = right[j];
+	            j++;
+	        }
+	        k++;
+	    }
+	 
+	    // copy remaining elements of left, if any
+	    while (i < len1)
+	    {
+	        arr[k] = left[i];
+	        k++;
+	        i++;
+	    }
+	 
+	    // copy remaining element of right, if any
+	    while (j < len2)
+	    {
+	        arr[k] = right[j];
+	        k++;
+	        j++;
+	    }
+	}
+	private static void timSort(int arr[], int n) {
+		int RUN = 32;
+		 for (int i = 0; i < n; i+=RUN) {
+			 	int min = (i+31) > (n-1) ? (n-1) : (i+31);
+		        iterativeInsertionSort(arr, i, min);
+		 }
+		    // start merging from size RUN (or 32). It will merge
+		    // to form size 64, then 128, 256 and so on ....
+		    for (int size = RUN; size < n; size = 2*size)
+		    {
+		        // pick starting point of left sub array. We
+		        // are going to merge arr[left..left+size-1]
+		        // and arr[left+size, left+2*size-1]
+		        // After every merge, we increase left by 2*size
+		        for (int left = 0; left < n; left += 2*size)
+		        {
+		            // find ending point of left sub array
+		            // mid+1 is starting point of right sub array
+		            int mid = left + size - 1;
+		            int right = (left + (2*size) - 1) < (n-1) ? (left + (2*size) - 1) : (n-1);
+		            // merge sub array arr[left.....mid] &
+		            // arr[mid+1....right]
+		            merge(arr, left, mid, right);
+		        }
+		    }
+	}
+	
 	private static void displayArray(int arr[], int howMany)
 	{
 		for(int i = 0;i<howMany;i++)

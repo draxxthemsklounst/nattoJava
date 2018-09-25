@@ -38,13 +38,19 @@ public class gui extends JPanel implements ActionListener, FocusListener{
 		window.setTitle("Natto");
 		window.getContentPane().setPreferredSize(new Dimension(800,600));
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window.setLayout(new FlowLayout());
+		//window.setLayout(new BorderLayout());
 		
-		Canvas canvas = new Canvas();
-		canvas.setSize(800, 550);
+		draw canvas = new draw();
+		
+		canvas.setMinimumSize(new Dimension(800, 550));
+		canvas.setMaximumSize(new Dimension(800, 550));
+		//paper.setSize(800, 550);
 		canvas.setBackground(Color.gray);
 		canvas.setVisible(true);
-		window.add(canvas);
+		
+		window.add("Center",canvas);
+		
+		window.setLayout(new FlowLayout());
 		
 		textFieldLabel = new JLabel("Array Size");
 		window.add(textFieldLabel);
