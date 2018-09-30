@@ -2,11 +2,17 @@ package algorithm;
 
 import java.io.IOException;
 import java.util.Scanner;
+import javax.swing.JFrame;
 
 public class algorithm {
 	public static void main(String [] args) throws IOException {
 		//algorithm.mainMenu();
-		gui Gui = new gui();
+		//gui Gui = new gui();
+                netbeansGUI gui = new netbeansGUI();
+                gui.setVisible(true);
+                gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                gui.setResizable(false);
+		//megapanel panel = new megapanel();
 	}
 	
 	private static void mainMenu() {
