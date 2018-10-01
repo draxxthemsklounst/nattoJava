@@ -113,7 +113,7 @@ public class sortingAlgorithms {
 		}
 	}
 	
-	private static void quickSort(int [] arr) {
+	protected static void quickSort(int [] arr) {
 		quickSort(arr,0,arr.length -1);
 	}
 	private static void quickSort(int [] arr, int begin, int end) {
@@ -147,7 +147,7 @@ public class sortingAlgorithms {
 		p[b] = c;
 	}
 
-	private static void iterativeBubbleSort(int arr[], int howMany) {
+	protected static void iterativeBubbleSort(int arr[], int howMany) {
 		for(int i = 0; i < howMany - 1; i ++) {
 			for(int j = 0; j < howMany - 1 - i; j++ ) {
 				if(arr[j] > arr[j+1]) {
@@ -158,7 +158,7 @@ public class sortingAlgorithms {
 			}
 		}
 	}
-	private static void recursiveBubbleSort(int arr[], int howMany) {
+	protected static void recursiveBubbleSort(int arr[], int howMany) {
 		if(howMany == 1)
 			return;
 		for(int i = 0; i < howMany-1; i++) {
@@ -170,7 +170,7 @@ public class sortingAlgorithms {
 		}
 		recursiveBubbleSort(arr,howMany-1);
 	}
-	private static void selectionSort(int[] arr, int howMany) {
+	protected static void selectionSort(int[] arr, int howMany) {
 		for(int i = 0; i < howMany - 1; i++) {
 			int smallestIndex = i;
 			for(int j = i+1; j<howMany; j++) {
@@ -182,7 +182,7 @@ public class sortingAlgorithms {
 			arr[smallestIndex] = swap;
 		}
 	}
-	private static void iterativeInsertionSort(int[] arr, int begin, int end) {
+	protected static void iterativeInsertionSort(int[] arr, int begin, int end) {
 		int sortedIndex;
 		for(int i = begin; i < end; i++) {
 			sortedIndex = i;
@@ -195,7 +195,7 @@ public class sortingAlgorithms {
 			}
 		}
 	}
-	private static void recursiveInsertionSort(int[] arr, int howMany, int sortedIndex) {
+	protected static void recursiveInsertionSort(int[] arr, int howMany, int sortedIndex) {
 		if(sortedIndex == howMany)
 			return;
 		for(int j = 0; j<sortedIndex; j++) {
@@ -209,7 +209,7 @@ public class sortingAlgorithms {
 		recursiveInsertionSort(arr, howMany, sortedIndex);
 	}
 
-	private static void mergeSort(int[] arr, int begin, int end) {
+	protected static void mergeSort(int[] arr, int begin, int end) {
 		if(begin < end) {
 			int middle = (begin + end)/ 2;
 			mergeSort(arr,begin,middle);
@@ -334,7 +334,7 @@ public class sortingAlgorithms {
 		    }
 	}
 	
-	private static void displayArray(int arr[], int howMany)
+	protected static void displayArray(int arr[], int howMany)
 	{
 		for(int i = 0;i<howMany;i++)
 		{
@@ -344,7 +344,7 @@ public class sortingAlgorithms {
 		}
 		System.out.println();
 	}
-	private static int[] randArray(int howMany)
+	protected static int[] randArray(int howMany)
 	{
 		Random randInstance = new Random();
 		int randomArr[] = new int[howMany];

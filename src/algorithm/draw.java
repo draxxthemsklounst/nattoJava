@@ -9,8 +9,9 @@ import javax.swing.JPanel;
 
 public class draw extends Canvas{
 	public draw() {
-		this.setSize(new Dimension(800,400));
+		this.setSize(new Dimension(1000,500));
 		this.setBackground(Color.DARK_GRAY);
+		this.setVisible(true);
 	}
 	public void drawing() {
 		repaint();

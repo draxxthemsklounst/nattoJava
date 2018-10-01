@@ -25,11 +25,15 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.GroupLayout;
 
-public class gui extends JPanel {
+public class gui extends JPanel implements ActionListener, FocusListener{
 	
 	private JFrame window;
-	
+	private JLabel textFieldLabel;
+	private JTextField SizeArray;
+	private JComboBox<String> comboBox;
+	private JButton runButton;
 	
 	public gui() {
 		window = new JFrame();
@@ -43,17 +47,61 @@ public class gui extends JPanel {
 		
 		draw draw = new draw();
 		draw.setVisible(true);
-		window.add(draw);
+		this.add(draw);
 		
-		optionPane fred = new optionPane();
-		window.add(fred);
+		this.setBackground(Color.LIGHT_GRAY);
+		this.setVisible(true);
 		
+	
+		textFieldLabel = new JLabel("Array Size");
+		this.add(textFieldLabel);
+		
+		SizeArray = new JTextField("Enter Array Size");
+		SizeArray.addFocusListener(this);
+		this.add(SizeArray);
+		
+		String[] comboBoxSelection = {"Iterative Bubble Sort","Recursive Bubble Sort","Selection Sort","Iterative Insertion Sort","Recursive Insertion Sort","Merge Sort","Quick Sort"};
+		comboBox = new JComboBox<String>(comboBoxSelection);
+		comboBox.setSelectedIndex(1);
+		comboBox.addActionListener(this);
+		this.add(comboBox);
+		
+		runButton = new JButton("Run");
+		runButton.setActionCommand("run");
+		this.add(runButton);
+		
+		GroupLayout layout = new GroupLayout(window);
+		this.setLayout(layout);
+		
+		window.add(this);
 		window.pack();
 		window.setLocationRelativeTo(null);
 		window.setVisible(true);
 		
 	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		
+		if("run".equals(e.getActionCommand())) {
+			textFieldLabel.getText();
+			comboBox.getSelectedItem();
+			
+			
+		}
+		
+	}
 
+	@Override
+	public void focusGained(FocusEvent e) {
+		if(SizeArray.getText().trim().equals("Enter Array Size")) 
+			SizeArray.setText("");
+	}
+
+	@Override
+	public void focusLost(FocusEvent e) {
+		if(SizeArray.getText().trim().equals("")) 
+			SizeArray.setText("Enter Array Size");
+	}
 	
 	
 }
