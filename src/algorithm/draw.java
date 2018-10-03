@@ -28,7 +28,7 @@ public class draw extends Canvas{
 	public void initRectangles(int windowWidth, int windowHeight,int size) {
 		int rectWidth = windowWidth / size;
 		for(int i = 0; i<size;i++) {
-			addRectangle()
+			
 		}
 	}
 }
