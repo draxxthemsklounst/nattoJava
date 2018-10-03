@@ -1,6 +1,7 @@
 package algorithm;
 
 import java.awt.BorderLayout;
+import org.apache.commons.lang3.StringUtils;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,13 +13,14 @@ import java.util.Scanner;
 import javax.swing.*;
 
 public class frame extends JPanel implements ActionListener, FocusListener{
+	private sortingforGUI sort;
+	
 	private JFrame window;
 	private JPanel drawPanel;
 	private JPanel toolbarPanel;
 	private JPanel console;
 	private JTextArea consoleText;
 	private JScrollPane conscroll;
-	
 	private JLabel textFieldLabel;
 	private JTextField SizeArray;
 	private JComboBox<String> comboBox;
@@ -34,7 +36,7 @@ public class frame extends JPanel implements ActionListener, FocusListener{
 	}
 	
 	private void init() {
-		sortingforGUI sortingforGUI = new sortingforGUI();
+		sort = new sortingforGUI();
 		
 		//GUI
 		window = new JFrame();
@@ -150,9 +152,9 @@ public class frame extends JPanel implements ActionListener, FocusListener{
                 .addGap(1, 1, 1)
                 .addComponent(SizeArray, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(algoSelection, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(runButton, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -190,15 +192,42 @@ public class frame extends JPanel implements ActionListener, FocusListener{
 		
 		window.pack();
 	}
-	private void runButtonClicked(java.awt.event.MouseEvent evt)                                         
-    {                                             
-        if(SizeArray.getText().equals("Enter Array Size"))
-        	System.out.println("Enter an Array Size.");
+	private void runButtonClicked(java.awt.event.MouseEvent evt) {                                             
+		if( !StringUtils.isNumeric(SizeArray.getText()) || SizeArray.getText().isEmpty()) {
+			System.out.println("Enter an Array Size.");
+			return;
+		}
+		if(StringUtils.isNumeric(SizeArray.getText())){
+			System.out.println("Hello There");
+			int arraySize = Integer.parseInt(SizeArray.getText());
+			sort.iterativeBubbleSort(sort.randArray(arraySize), arraySize);
+			switch(algoSelection.getSelectedIndex() ) {
+			case 1: 
+				
+				break;
+			
+			case 2:
+				break;
+			case 3:
+				break;
+			case 4:
+				break;
+			case 5:
+				break;
+			case 6:
+				break;
+			case 7:
+				break;
+			case 8:
+				break;
+			}
+		}
     }  
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
 		if("run".equals(e.getActionCommand())) {
+			
 			textFieldLabel.getText();
 			comboBox.getSelectedItem();
 		}
