@@ -16,13 +16,19 @@ public class draw extends Canvas{
 	public void drawing() {
 		repaint();
 	}
-	@Override
-	public void paint(Graphics g) {
+	
+	public void paint(Graphics g,int width, int height) {
             
             g.drawRect(0, 0, 30, 30);
             g.drawRect(30, 0, 30, 30);
 	}
-	public void addRectangle() {
+	public static void addRectangle(int width,int height) {
 		
+	}
+	public void initRectangles(int windowWidth, int windowHeight,int size) {
+		int rectWidth = windowWidth / size;
+		for(int i = 0; i<size;i++) {
+			addRectangle()
+		}
 	}
 }

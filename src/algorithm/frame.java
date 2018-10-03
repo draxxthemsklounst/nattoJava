@@ -1,6 +1,8 @@
 package algorithm;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+
 import org.apache.commons.lang3.StringUtils;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -15,7 +17,7 @@ import javax.swing.*;
 public class frame extends JPanel implements ActionListener, FocusListener{
 	private sortingforGUI sort;
 	
-	private JFrame window;
+	//private JFrame window;
 	private JPanel drawPanel;
 	private JPanel toolbarPanel;
 	private JPanel console;
@@ -27,9 +29,7 @@ public class frame extends JPanel implements ActionListener, FocusListener{
 	private JComboBox<String> algoSelection;
 	private JButton runButton;
 	
-	public static void main(String [] args) {
-		new frame();
-	}
+	
 	
 	public frame() {
 		init();
@@ -38,19 +38,12 @@ public class frame extends JPanel implements ActionListener, FocusListener{
 	private void init() {
 		sort = new sortingforGUI();
 		
-		//GUI
-		window = new JFrame();
-		window.setContentPane(this);
-		window.setTitle("Search Algorithm GUI");
-		window.getContentPane().setPreferredSize(new Dimension(1280,720));
-		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//window.setLocationRelativeTo("Center");
-		window.setVisible(true);
-		window.setResizable(false);
 		
-		draw draw = new draw();
-		drawPanel = new JPanel();
-		drawPanel.add(draw);
+		
+		
+		drawPanel = new sortVisual();
+		this.add(drawPanel);
+		
 		//this.add(drawPanel);
 		
 		textFieldLabel = new JLabel("Array Size");
@@ -112,7 +105,7 @@ public class frame extends JPanel implements ActionListener, FocusListener{
         );
         drawPanelLayout.setVerticalGroup(
         	drawPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGap(0, draw.getHeight(), Short.MAX_VALUE)
+            .addGap(0, drawPanel.getHeight(), Short.MAX_VALUE)
         );
         
         //console panel
@@ -190,7 +183,7 @@ public class frame extends JPanel implements ActionListener, FocusListener{
         );
 		
 		
-		window.pack();
+		
 	}
 	private void runButtonClicked(java.awt.event.MouseEvent evt) {                                             
 		if( !StringUtils.isNumeric(SizeArray.getText()) || SizeArray.getText().isEmpty()) {
