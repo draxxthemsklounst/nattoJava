@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
-public class sortingforGUI extends sortingAlgorithms{
+public class sortingforGUI{
 	public void sortArrayMenu(Scanner scanner, PrintStream out) {
 		
 		int Which, howMany;

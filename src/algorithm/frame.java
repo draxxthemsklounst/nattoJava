@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.io.PrintStream;
@@ -36,20 +37,41 @@ public class frame extends JPanel implements ActionListener, FocusListener{
 	}
 	
 	private void init() {
-		sort = new sortingforGUI();
+		//sort = new sortingforGUI();
 		
 		
-		
-		draw draw = new draw();
-		drawPanel = new sortVisual();
+		drawPanel = new sortVisual(); //handles the rectangle graphics and sorting
 		//drawPanel.add(draw);
-		drawPanel.setBackground(Color.DARK_GRAY);
 		this.add(drawPanel);
 		
 		//this.add(drawPanel);
 		
 		textFieldLabel = new JLabel("Array Size");
 		this.add(textFieldLabel);
+		
+		textFieldLabel.addFocusListener(new FocusAdapter() {
+			public void focusGained(java.awt.event.FocusEvent evt)
+            {
+                runButtonFocusGained(evt);
+            }
+            private void runButtonFocusGained(FocusEvent evt) {
+				// TODO Auto-generated method stub
+				
+			}
+			public void focusLost(java.awt.event.FocusEvent evt)
+            {
+                runButtonFocusLost(evt);
+            }
+			private void runButtonFocusLost(FocusEvent evt) {
+				// TODO Auto-generated method stub
+				if(StringUtils.isNumeric(SizeArray.getText())) {
+					int arraySize = Integer.parseInt(SizeArray.getText());
+					drawPanel.initArray(arraySize);
+				}
+				drawPanel.repaint();
+				
+			}
+		});
 		
 		SizeArray = new JTextField("Enter Array Size");
 		SizeArray.addFocusListener(this);
@@ -77,6 +99,9 @@ public class frame extends JPanel implements ActionListener, FocusListener{
                 runButtonClicked(evt);
             }
         });
+		
+		
+
 		
 		toolbarPanel = new JPanel();
 		toolbarPanel.add(textFieldLabel);
@@ -192,30 +217,29 @@ public class frame extends JPanel implements ActionListener, FocusListener{
 			System.out.println("Enter an Array Size.");
 			return;
 		}
-		if(StringUtils.isNumeric(SizeArray.getText())){
-			System.out.println("Hello There");
-			int arraySize = Integer.parseInt(SizeArray.getText());
-			sort.iterativeBubbleSort(sort.randArray(arraySize), arraySize);
-			switch(algoSelection.getSelectedIndex() ) {
-			case 1: 
-				
-				break;
+		
+		System.out.println("Hello There");
+		int arraySize = Integer.parseInt(SizeArray.getText());
+		
+		switch(algoSelection.getSelectedIndex() ) {
+		case 1: 
+			sortVisual.iterativeBubbleSort(sort.randArray(arraySize), arraySize);
+			break;
 			
-			case 2:
-				break;
-			case 3:
-				break;
-			case 4:
-				break;
-			case 5:
-				break;
-			case 6:
-				break;
-			case 7:
-				break;
-			case 8:
-				break;
-			}
+		case 2:
+			break;
+		case 3:
+			break;
+		case 4:
+			break;
+		case 5:
+			break;
+		case 6:
+			break;
+		case 7:
+			break;
+		case 8:
+			break;
 		}
     }  
 	@Override
@@ -240,5 +264,14 @@ public class frame extends JPanel implements ActionListener, FocusListener{
 	public void focusLost(FocusEvent e) {
 		if(SizeArray.getText().trim().equals("")) 
 			SizeArray.setText("Enter Array Size");
+		if(StringUtils.isNumeric(SizeArray.getText())) {
+			int arraySize = Integer.parseInt(SizeArray.getText());
+			if(arraySize >= 1000) {
+				System.out.println("Enter a number smaller than 1,000 please.");
+				return;
+			}
+			drawPanel.initArray(arraySize);
+		}
+		
 	}
 }
