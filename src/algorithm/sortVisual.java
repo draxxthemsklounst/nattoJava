@@ -12,10 +12,12 @@ import javax.swing.JPanel;
 public class sortVisual extends JPanel{
 	private static final int HEIGHT = 500;
 	private static final int WIDTH = 1000;
-	private int DefaultMaxInt = WIDTH/10;
+	private static final int DefaultMaxAmount = 10;
+	private int DefaultWidth = WIDTH/DefaultMaxAmount;
 	private boolean Init;
 	private BufferedImage img;
 	private Graphics2D gr;
+	private rectangles[] rectOnScreen;
 	
 	public sortVisual() {
 		
@@ -53,42 +55,58 @@ public class sortVisual extends JPanel{
 		
 	}
 	
-	public void initArray(int howMany) {
+	//creates an array of rect objects
+	public rectangles[] rectArrayInit(int howMany) { 
+		rectangles [] rectArray = new rectangles[howMany];
+		int[] temp = randArray(howMany);
+		for(int i=0;i<howMany;i++) {
+			rectArray[i] = new rectangles();
+			rectArray[i].setValue(temp[i]);
+			rectArray[i].setHeight((int)((float)temp[i]/(float)100 * (float)HEIGHT));
+			rectArray[i].setY(HEIGHT-(int)(((float)temp[i]/(float)100) * (float)HEIGHT));
+			if(howMany <= 10) {
+				rectArray[i].setX(i*DefaultWidth);
+				rectArray[i].setWidth(DefaultWidth);
+			}
+			else {
+				int rectWidth = (int) ( (float)WIDTH/(float)howMany );
+				rectArray[i].setWidth(rectWidth);
+				rectArray[i].setX(i*rectWidth);
+			}
+		}
+		return rectArray;
+	}
+	//paints the panel with updated rectangle objects
+	public void paintRect(rectangles[] r, int howMany) {
+		Graphics2D g = (Graphics2D) img.getGraphics();
+		
+		for(int i=0;i<howMany;i++) {
+			if(r[i].getWhiteBool()) {
+				g.setColor(Color.WHITE);
+			} else {
+				g.setColor(Color.RED);
+			}
+			g.fillRect(
+					r[i].getX(), 
+					r[i].getY(), 
+					r[i].getWidth(), 
+					r[i].getHeight());
+			}
+			
+			g.dispose();
+			repaint();
+	}
+	public void initRectPanel(int howMany) {
 		
 		Graphics2D g = (Graphics2D) img.getGraphics();
 		g.clearRect(0, 0, WIDTH, HEIGHT);//clears screen
 		g.setColor(Color.DARK_GRAY);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
-		int[] temp = randArray(howMany);
-		Random rand = new Random();
-		
-		for(int i=0;i<howMany;i++) {
-			float R = rand.nextFloat();
-			float G = rand.nextFloat();
-			float B = rand.nextFloat();
-			Color randomColor = new Color(R,G,B);
-			g.setColor(randomColor);
-			
-			int rectHeight= (int)((float)temp[i]/(float)100 * (float)HEIGHT);
-			int Y = HEIGHT-(int)(((float)temp[i]/(float)100) * (float)HEIGHT);
-			if(howMany <= 10) {
-				int X =i*DefaultMaxInt;
-				
-				g.fillRect(X, Y, DefaultMaxInt, rectHeight);
-			}
-			else {
-				int rectWidth = (int)((float)WIDTH / (float)howMany);
-				//int leftOver = (int)(((float)WIDTH - ((float)rectWidth * (float)howMany)) / (float)howMany);
-				int X = i*(rectWidth);
-				if(i == howMany-1) {
-					g.fillRect(X, Y, WIDTH-X, rectHeight);
-					break;
-				}
-				g.fillRect(X, Y, rectWidth, rectHeight);
-			}
-		}
 		g.dispose();
-		repaint();
+		
+		rectOnScreen = rectArrayInit(howMany);//creates rectangles array
+		paintRect(rectOnScreen,howMany);//paints with the given array
+		
 	}
 	protected static void quickSort(int [] arr) {
 		quickSort(arr,0,arr.length -1);
@@ -124,18 +142,26 @@ public class sortVisual extends JPanel{
 		p[b] = c;
 	}
 
-	protected static void iterativeBubbleSort(int arr[], int howMany) {
+	protected void iterativeBubbleSort(int howMany) throws InterruptedException {
+		if(rectOnScreen != null) {
+			System.out.println("Enter Array Size");
+		}
 		for(int i = 0; i < howMany - 1; i ++) {
 			for(int j = 0; j < howMany - 1 - i; j++ ) {
-				if(arr[j] > arr[j+1]) {
-					int temp = arr[j];
-					arr[j] = arr[j+1];
-					arr[j+1] = temp;
+				if(rectOnScreen[j].getValue() > rectOnScreen[j+1].getValue()) {
+					rectOnScreen[j].setWhiteBool(false);
+					Thread.sleep(10);
+					paintRect(rectOnScreen,howMany);
+					
+					
+					int temp = rectOnScreen[j].getValue();
+					rectOnScreen[j].setValue(rectOnScreen[j+1].getValue());
+					rectOnScreen[j+1].setValue(temp);
 				}
 			}
 		}
 	}
-	protected static void recursiveBubbleSort(int arr[], int howMany) {
+	protected void recursiveBubbleSort(int arr[], int howMany) {
 		if(howMany == 1)
 			return;
 		for(int i = 0; i < howMany-1; i++) {
@@ -147,7 +173,7 @@ public class sortVisual extends JPanel{
 		}
 		recursiveBubbleSort(arr,howMany-1);
 	}
-	protected static void selectionSort(int[] arr, int howMany) {
+	protected void selectionSort(int[] arr, int howMany) {
 		for(int i = 0; i < howMany - 1; i++) {
 			int smallestIndex = i;
 			for(int j = i+1; j<howMany; j++) {
@@ -159,7 +185,7 @@ public class sortVisual extends JPanel{
 			arr[smallestIndex] = swap;
 		}
 	}
-	protected static void iterativeInsertionSort(int[] arr, int begin, int end) {
+	protected void iterativeInsertionSort(int[] arr, int begin, int end) {
 		int sortedIndex;
 		for(int i = begin; i < end; i++) {
 			sortedIndex = i;
@@ -172,7 +198,7 @@ public class sortVisual extends JPanel{
 			}
 		}
 	}
-	protected static void recursiveInsertionSort(int[] arr, int howMany, int sortedIndex) {
+	protected void recursiveInsertionSort(int[] arr, int howMany, int sortedIndex) {
 		if(sortedIndex == howMany)
 			return;
 		for(int j = 0; j<sortedIndex; j++) {
@@ -186,7 +212,7 @@ public class sortVisual extends JPanel{
 		recursiveInsertionSort(arr, howMany, sortedIndex);
 	}
 
-	protected static void mergeSort(int[] arr, int begin, int end) {
+	protected void mergeSort(int[] arr, int begin, int end) {
 		if(begin < end) {
 			int middle = (begin + end)/ 2;
 			mergeSort(arr,begin,middle);
@@ -234,7 +260,7 @@ public class sortVisual extends JPanel{
 		}
 	}
 */
-	private static void merge(int arr[], int l, int m, int r)
+	private void merge(int arr[], int l, int m, int r)
 	{
 	    // original array is broken in two parts
 	    // left and right array
@@ -284,7 +310,7 @@ public class sortVisual extends JPanel{
 	        j++;
 	    }
 	}
-	private static void timSort(int arr[], int n) {
+	private void timSort(int arr[], int n) {
 		int RUN = 32;
 		 for (int i = 0; i < n; i+=RUN) {
 			 	int min = (i+31) > (n-1) ? (n-1) : (i+31);

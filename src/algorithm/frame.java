@@ -1,19 +1,14 @@
 package algorithm;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-
+import org.apache.commons.lang3.CharUtils;
 import org.apache.commons.lang3.StringUtils;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
 import java.io.PrintStream;
 import java.util.Scanner;
-
-import javax.swing.*;
 
 public class frame extends JPanel implements ActionListener, FocusListener{
 	private sortingforGUI sort;
@@ -30,48 +25,42 @@ public class frame extends JPanel implements ActionListener, FocusListener{
 	private JComboBox<String> algoSelection;
 	private JButton runButton;
 	
-	
-	
 	public frame() {
 		init();
 	}
 	
 	private void init() {
-		//sort = new sortingforGUI();
-		
-		
 		drawPanel = new sortVisual(); //handles the rectangle graphics and sorting
-		//drawPanel.add(draw);
 		this.add(drawPanel);
-		
-		//this.add(drawPanel);
 		
 		textFieldLabel = new JLabel("Array Size");
 		this.add(textFieldLabel);
-		
-		textFieldLabel.addFocusListener(new FocusAdapter() {
-			public void focusGained(java.awt.event.FocusEvent evt)
-            {
-                runButtonFocusGained(evt);
-            }
-            private void runButtonFocusGained(FocusEvent evt) {
-				// TODO Auto-generated method stub
-				
-			}
-			public void focusLost(java.awt.event.FocusEvent evt)
-            {
-                runButtonFocusLost(evt);
-            }
-			private void runButtonFocusLost(FocusEvent evt) {
-				// TODO Auto-generated method stub
-				if(StringUtils.isNumeric(SizeArray.getText())) {
+		textFieldLabel.addKeyListener(new KeyListener() {
+			@Override
+		    public void keyPressed(KeyEvent e){
+		        
+		    }
+
+		    @Override
+		    public void keyTyped(KeyEvent e) {
+		    }
+
+		    @Override
+		    public void keyReleased(KeyEvent e) {
+		    	
+				if(e.getKeyCode() == KeyEvent.KEY_RELEASED) {
+					System.out.println("yeet");
 					int arraySize = Integer.parseInt(SizeArray.getText());
-					drawPanel.initArray(arraySize);
+					if(arraySize > 1000) {
+						System.out.println("Enter a number smaller than 1,000 please.");
+						return;
+					}
+					drawPanel.initRectPanel(arraySize);
+					drawPanel.repaint();
 				}
-				drawPanel.repaint();
-				
-			}
+		    }
 		});
+		
 		
 		SizeArray = new JTextField("Enter Array Size");
 		SizeArray.addFocusListener(this);
@@ -96,12 +85,62 @@ public class frame extends JPanel implements ActionListener, FocusListener{
         {
             public void mouseClicked(java.awt.event.MouseEvent evt)
             {
-                runButtonClicked(evt);
+                try {
+					runButtonClicked(evt);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
+            public void runButtonClicked(java.awt.event.MouseEvent evt) throws InterruptedException {                                             
+        		if( !StringUtils.isNumeric(SizeArray.getText()) || SizeArray.getText().isEmpty()) {
+        			System.out.println("Enter a valid array size (1 - 1000)");
+        			return;
+        		}
+        		else {
+        			
+					int arraySize = Integer.parseInt(SizeArray.getText());
+					if(arraySize > 1000) {
+						System.out.println("Enter a number smaller than 1,000 please.");
+						return;
+					}
+					drawPanel.initRectPanel(arraySize);
+					drawPanel.repaint();
+					Thread.sleep(200);
+				}
+        		
+        		switch(algoSelection.getSelectedIndex()) {
+        		case 0:
+        			break;
+        		case 1: //must be on "sorting algorithms"
+        			int arraySize = Integer.parseInt(SizeArray.getText());
+        			switch(comboBox.getSelectedIndex() ) {
+        			case 1: 
+        				//sortVisual.iterativeBubbleSort(sort.randArray(arraySize), arraySize);
+        				break;
+        			case 2:
+        				break;
+        			case 3:
+        				break;
+        			case 4:
+        				break;
+        			case 5:
+        				break;
+        			case 6:
+        				break;
+        			case 7:
+        				break;
+        			case 8:
+        				break;
+        			}
+        			break;
+        		case 2:
+        			break;
+        		case 3:
+        			break;
+        		}
+            }  
         });
-		
-		
-
 		
 		toolbarPanel = new JPanel();
 		toolbarPanel.add(textFieldLabel);
@@ -111,12 +150,9 @@ public class frame extends JPanel implements ActionListener, FocusListener{
 		
 		console = new JPanel();
 		consoleText = new JTextArea();
+		consoleText.setEditable(false);
 		PrintStream out = new PrintStream(new CustomOutputStream(consoleText));
-		
 		System.setOut(out);
-		//System.setOut(printStream);
-		//System.setErr(printStream);
-		
 		conscroll = new JScrollPane();
 		consoleText.setColumns(20);
 		consoleText.setRows(5);
@@ -212,46 +248,28 @@ public class frame extends JPanel implements ActionListener, FocusListener{
 		
 		
 	}
-	private void runButtonClicked(java.awt.event.MouseEvent evt) {                                             
-		if( !StringUtils.isNumeric(SizeArray.getText()) || SizeArray.getText().isEmpty()) {
-			System.out.println("Enter an Array Size.");
-			return;
-		}
-		
-		System.out.println("Hello There");
-		int arraySize = Integer.parseInt(SizeArray.getText());
-		
-		switch(algoSelection.getSelectedIndex() ) {
-		case 1: 
-			sortVisual.iterativeBubbleSort(sort.randArray(arraySize), arraySize);
-			break;
-			
-		case 2:
-			break;
-		case 3:
-			break;
-		case 4:
-			break;
-		case 5:
-			break;
-		case 6:
-			break;
-		case 7:
-			break;
-		case 8:
-			break;
-		}
-    }  
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		if("run".equals(e.getActionCommand())) {
-			
-			textFieldLabel.getText();
-			comboBox.getSelectedItem();
+		
+		if(!algoSelection.getSelectedItem().equals("Sort Algorithms")) {
+			comboBox.setVisible(false);
+			repaint();
 		}
-		
-		
+		else {
+			comboBox.setVisible(true);
+			repaint();
+		}
+		if(StringUtils.isNumeric(SizeArray.getText())) {
+			int arraySize = Integer.parseInt(SizeArray.getText());
+			if(arraySize > 1000) {
+				System.out.println("Enter a number smaller than 1,000 please.");
+				return;
+			}
+			drawPanel.initRectPanel(arraySize);
+			drawPanel.repaint();
+		}
 	}
 
 	@Override
@@ -264,14 +282,8 @@ public class frame extends JPanel implements ActionListener, FocusListener{
 	public void focusLost(FocusEvent e) {
 		if(SizeArray.getText().trim().equals("")) 
 			SizeArray.setText("Enter Array Size");
-		if(StringUtils.isNumeric(SizeArray.getText())) {
-			int arraySize = Integer.parseInt(SizeArray.getText());
-			if(arraySize >= 1000) {
-				System.out.println("Enter a number smaller than 1,000 please.");
-				return;
-			}
-			drawPanel.initArray(arraySize);
-		}
+		
 		
 	}
+
 }

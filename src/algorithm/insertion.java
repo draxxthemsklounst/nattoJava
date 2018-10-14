@@ -1,16 +1,15 @@
 package algorithm;
 
 import java.awt.Dimension;
+import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 
 public class insertion {
 	public static void main(String [] args) {
-		
-		
 		dewit();
 	}
-	public static void dewit() {
+	protected static void dewit() {
 		frame f = new frame();
 		
 		//GUI
@@ -20,23 +19,12 @@ public class insertion {
 		window.setTitle("Search Algorithm GUI");
 		window.getContentPane().setPreferredSize(new Dimension(1280,720));
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//window.setLocationRelativeTo("Center");
-		window.setVisible(true);
-		window.setResizable(false);
-		window.pack();
-	}
-	public void df() {
-sortVisual yeet = new sortVisual();
 		
-		JFrame window = new JFrame();
-		window.add(yeet);
-		window.setContentPane(yeet);
-		window.setTitle("Search Algorithm GUI");
-		window.getContentPane().setPreferredSize(new Dimension(1280,720));
-		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//window.setLocationRelativeTo("Center");
+		
+		window.pack();
+		window.setLocationRelativeTo(null);
 		window.setVisible(true);
 		window.setResizable(false);
-		window.pack();
+		
 	}
 }
