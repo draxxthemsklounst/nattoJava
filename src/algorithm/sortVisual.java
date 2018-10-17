@@ -18,9 +18,11 @@ public class sortVisual extends JPanel{
 	private BufferedImage img;
 	private Graphics2D gr;
 	private rectangles[] rectOnScreen;
+	private final Color SWITCHING_COLOR = Color.RED;
+	private final Color FINISHED_COLOR = Color.GREEN;
+	private final Color DEFAULT_COLOR = Color.WHITE;
 	
 	public sortVisual() {
-		
 		this.setSize(new Dimension(WIDTH,HEIGHT));
 		this.setPreferredSize(new Dimension(WIDTH,HEIGHT));
 		this.setMinimumSize(new Dimension(WIDTH,HEIGHT));
@@ -54,11 +56,17 @@ public class sortVisual extends JPanel{
 		}
 		
 	}
-	
+	public boolean rectInitialized() {
+		if(rectOnScreen.length == 0)
+			return false;
+		else
+			return true;
+	}
 	//creates an array of rect objects
 	public rectangles[] rectArrayInit(int howMany) { 
 		rectangles [] rectArray = new rectangles[howMany];
 		int[] temp = randArray(howMany);
+		sortVisual.displayArray(temp);
 		for(int i=0;i<howMany;i++) {
 			rectArray[i] = new rectangles();
 			rectArray[i].setValue(temp[i]);
@@ -77,15 +85,14 @@ public class sortVisual extends JPanel{
 		return rectArray;
 	}
 	//paints the panel with updated rectangle objects
-	public void paintRect(rectangles[] r, int howMany) {
+	public void paintRect(rectangles[] r) {
 		Graphics2D g = (Graphics2D) img.getGraphics();
+		g.clearRect(0, 0, WIDTH, HEIGHT);//clears screen
+		//g.setColor(Color.BLACK);
+		//g.fillRect(0, 0, WIDTH, HEIGHT);
 		
-		for(int i=0;i<howMany;i++) {
-			if(r[i].getWhiteBool()) {
-				g.setColor(Color.WHITE);
-			} else {
-				g.setColor(Color.RED);
-			}
+		for(int i=0;i<r.length;i++) {
+			g.setColor(Color.white);
 			g.fillRect(
 					r[i].getX(), 
 					r[i].getY(), 
@@ -94,20 +101,13 @@ public class sortVisual extends JPanel{
 			}
 			
 			g.dispose();
-			repaint();
+			this.repaint();
 	}
 	public void initRectPanel(int howMany) {
-		
-		Graphics2D g = (Graphics2D) img.getGraphics();
-		g.clearRect(0, 0, WIDTH, HEIGHT);//clears screen
-		g.setColor(Color.DARK_GRAY);
-		g.fillRect(0, 0, WIDTH, HEIGHT);
-		g.dispose();
-		
 		rectOnScreen = rectArrayInit(howMany);//creates rectangles array
-		paintRect(rectOnScreen,howMany);//paints with the given array
-		
+		paintRect(rectOnScreen);//paints with the given array
 	}
+	
 	protected static void quickSort(int [] arr) {
 		quickSort(arr,0,arr.length -1);
 	}
@@ -142,24 +142,20 @@ public class sortVisual extends JPanel{
 		p[b] = c;
 	}
 
-	protected void iterativeBubbleSort(int howMany) throws InterruptedException {
-		if(rectOnScreen != null) {
-			System.out.println("Enter Array Size");
+	protected void iterativeBubbleSort() throws InterruptedException {
+		if(!rectInitialized()) {
+			System.out.println("Error: Rectangle Array not initialized");
+			return;
 		}
-		for(int i = 0; i < howMany - 1; i ++) {
-			for(int j = 0; j < howMany - 1 - i; j++ ) {
+		for(int i = 0; i < rectOnScreen.length - 1; i ++) {
+			for(int j = 0; j < rectOnScreen.length - 1 - i; j++ ) {
 				if(rectOnScreen[j].getValue() > rectOnScreen[j+1].getValue()) {
-					rectOnScreen[j].setWhiteBool(false);
-					Thread.sleep(10);
-					paintRect(rectOnScreen,howMany);
-					
-					
-					int temp = rectOnScreen[j].getValue();
-					rectOnScreen[j].setValue(rectOnScreen[j+1].getValue());
-					rectOnScreen[j+1].setValue(temp);
+					rectangles.swapRect(rectOnScreen,j,j+1);
+					paintRect(rectOnScreen);
 				}
 			}
 		}
+		sortVisual.displayArray(rectOnScreen);
 	}
 	protected void recursiveBubbleSort(int arr[], int howMany) {
 		if(howMany == 1)
@@ -337,11 +333,21 @@ public class sortVisual extends JPanel{
 		    }
 	}
 	
-	protected static void displayArray(int arr[], int howMany)
+	protected static void displayArray(int arr[])
 	{
-		for(int i = 0;i<howMany;i++)
+		for(int i = 0;i<arr.length;i++)
 		{
 			System.out.printf("%d\t", arr[i]);
+			if( (i+1)%10 == 0 )
+				System.out.println();
+		}
+		System.out.println();
+	}
+	protected static void displayArray(rectangles arr[])
+	{
+		for(int i = 0;i<arr.length;i++)
+		{
+			System.out.printf("%d\t", arr[i].getValue());
 			if( (i+1)%10 == 0 )
 				System.out.println();
 		}

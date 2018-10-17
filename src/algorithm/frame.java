@@ -24,6 +24,7 @@ public class frame extends JPanel implements ActionListener, FocusListener{
 	private JComboBox<String> comboBox;
 	private JComboBox<String> algoSelection;
 	private JButton runButton;
+	private final int MAXRECTANGLES = 1000;
 	
 	public frame() {
 		init();
@@ -74,7 +75,7 @@ public class frame extends JPanel implements ActionListener, FocusListener{
 		
 		String[] comboBoxSelection = {"Iterative Bubble Sort","Recursive Bubble Sort","Selection Sort","Iterative Insertion Sort","Recursive Insertion Sort","Merge Sort","Quick Sort"};
 		comboBox = new JComboBox<String>(comboBoxSelection);
-		comboBox.setSelectedIndex(1);
+		comboBox.setSelectedIndex(0);
 		comboBox.addActionListener(this);
 		this.add(comboBox);
 		
@@ -92,22 +93,26 @@ public class frame extends JPanel implements ActionListener, FocusListener{
 					e.printStackTrace();
 				}
             }
-            public void runButtonClicked(java.awt.event.MouseEvent evt) throws InterruptedException {                                             
+            public void runButtonClicked(java.awt.event.MouseEvent evt) throws InterruptedException {
+            	if(!drawPanel.rectInitialized()) {
+            		System.out.println("Error: Rectangle Array not initialized");
+            		return;
+            	}
         		if( !StringUtils.isNumeric(SizeArray.getText()) || SizeArray.getText().isEmpty()) {
-        			System.out.println("Enter a valid array size (1 - 1000)");
+        			System.out.printf("Enter a valid array size (1 - %d)\n",MAXRECTANGLES);
         			return;
         		}
-        		else {
+        		/*else{
         			
 					int arraySize = Integer.parseInt(SizeArray.getText());
-					if(arraySize > 1000) {
+					if(arraySize > MAXRECTANGLES) {
 						System.out.println("Enter a number smaller than 1,000 please.");
 						return;
 					}
 					drawPanel.initRectPanel(arraySize);
 					drawPanel.repaint();
-					Thread.sleep(200);
-				}
+					
+				}*/
         		
         		switch(algoSelection.getSelectedIndex()) {
         		case 0:
@@ -115,8 +120,12 @@ public class frame extends JPanel implements ActionListener, FocusListener{
         		case 1: //must be on "sorting algorithms"
         			int arraySize = Integer.parseInt(SizeArray.getText());
         			switch(comboBox.getSelectedIndex() ) {
+        			case 0:
+        				drawPanel.iterativeBubbleSort();
+        				repaint();
+        				break;
         			case 1: 
-        				//sortVisual.iterativeBubbleSort(sort.randArray(arraySize), arraySize);
+        				
         				break;
         			case 2:
         				break;
@@ -263,8 +272,8 @@ public class frame extends JPanel implements ActionListener, FocusListener{
 		}
 		if(StringUtils.isNumeric(SizeArray.getText())) {
 			int arraySize = Integer.parseInt(SizeArray.getText());
-			if(arraySize > 1000) {
-				System.out.println("Enter a number smaller than 1,000 please.");
+			if(arraySize > MAXRECTANGLES) {
+				System.out.printf("Enter a number smaller than %d please.\n",MAXRECTANGLES);
 				return;
 			}
 			drawPanel.initRectPanel(arraySize);
@@ -282,8 +291,15 @@ public class frame extends JPanel implements ActionListener, FocusListener{
 	public void focusLost(FocusEvent e) {
 		if(SizeArray.getText().trim().equals("")) 
 			SizeArray.setText("Enter Array Size");
-		
-		
+		if( StringUtils.isNumeric(SizeArray.getText()) && !SizeArray.getText().isEmpty()) {
+			int arraySize = Integer.parseInt(SizeArray.getText());
+			if(arraySize > MAXRECTANGLES) {
+				System.out.println("Enter a number smaller than 1,000 please.");
+				return;
+			}
+			drawPanel.initRectPanel(arraySize);
+			drawPanel.repaint();
+		}
 	}
 
 }
