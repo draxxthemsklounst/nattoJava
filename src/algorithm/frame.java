@@ -102,45 +102,55 @@ public class frame extends JPanel implements ActionListener, FocusListener{
         			System.out.printf("Enter a valid array size (1 - %d)\n",MAXRECTANGLES);
         			return;
         		}
-        		/*else{
-        			
-					int arraySize = Integer.parseInt(SizeArray.getText());
-					if(arraySize > MAXRECTANGLES) {
-						System.out.println("Enter a number smaller than 1,000 please.");
-						return;
-					}
-					drawPanel.initRectPanel(arraySize);
-					drawPanel.repaint();
-					
-				}*/
         		
         		switch(algoSelection.getSelectedIndex()) {
         		case 0:
         			break;
         		case 1: //must be on "sorting algorithms"
-        			int arraySize = Integer.parseInt(SizeArray.getText());
+        			//int arraySize = Integer.parseInt(SizeArray.getText());
         			switch(comboBox.getSelectedIndex() ) {
         			case 0:
         				drawPanel.iterativeBubbleSort();
+        				sortVisual.displayArray(drawPanel.getRectArray());
         				repaint();
         				break;
         			case 1: 
-        				
+        				drawPanel.initRecursiveBubbleSort();
+        				sortVisual.displayArray(drawPanel.getRectArray());
+        				repaint();
         				break;
         			case 2:
+        				drawPanel.selectionSort();
+        				sortVisual.displayArray(drawPanel.getRectArray());
+        				repaint();
         				break;
         			case 3:
+        				drawPanel.iterativeInsertionSort();
+        				sortVisual.displayArray(drawPanel.getRectArray());
+        				repaint();
         				break;
         			case 4:
+        				drawPanel.initRecursiveInsertionSort();
+        				sortVisual.displayArray(drawPanel.getRectArray());
         				break;
         			case 5:
+        				drawPanel.initMergeSort();
+        				sortVisual.displayArray(drawPanel.getRectArray());
         				break;
         			case 6:
+        				drawPanel.quickSort();
+        				sortVisual.displayArray(drawPanel.getRectArray());
         				break;
         			case 7:
+        				sortVisual.displayArray(drawPanel.getRectArray());
         				break;
         			case 8:
+        				sortVisual.displayArray(drawPanel.getRectArray());
         				break;
+        			default:
+        				System.out.println("Please select a valid Sorting Algorithm. ");
+        				break;
+        			
         			}
         			break;
         		case 2:

@@ -55,18 +55,8 @@ public class rectangles {
 		return c;
 	}
 	
-	public static void swapRect(rectangles[] r, int n,int m) {
+	public static void swap(rectangles[] r, int n,int m) {
 		rectangles temp = new rectangles();
-		/*
-		temp.setY(r[n].getY());
-		temp.setX(r[n].getX());
-		
-		r[n].setY(r[m].getY());
-		r[n].setX(r[n].getX());
-		
-		r[m].setY(temp.getY());
-		r[m].setX(temp.getX());
-		*/
 		
 		temp.setColor(r[n].getColor());
 		temp.setHeight(r[n].getHeight());
@@ -82,5 +72,23 @@ public class rectangles {
 		r[m].setHeight(temp.getHeight());
 		r[m].setValue(temp.getValue());
 		r[m].setY(temp.getY());
+	}
+	public static void swapRectComponent(rectangles[] n,rectangles [] m,int i, int j) {
+		rectangles temp = new rectangles();
+		
+		temp.setColor(n[i].getColor());
+		temp.setHeight(n[i].getHeight());
+		temp.setY(n[i].getY());
+		temp.setValue(n[i].getValue());
+		
+		n[i].setColor(m[j].getColor());
+		n[i].setHeight(m[j].getHeight());
+		n[i].setValue(m[j].getValue());
+		n[i].setY(m[j].getY());
+		
+		m[j].setColor(temp.getColor());
+		m[j].setHeight(temp.getHeight());
+		m[j].setValue(temp.getValue());
+		m[j].setY(temp.getY());
 	}
 }
