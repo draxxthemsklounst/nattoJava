@@ -16,6 +16,7 @@ public class sortVisual extends JPanel{
 	private int DefaultWidth = WIDTH/DefaultMaxAmount;
 	private boolean Init;
 	private boolean rectInitFlag;
+	private boolean sortComplete;
 	private BufferedImage img;
 	private Graphics2D gr;
 	private rectangles[] rectOnScreen;
@@ -31,6 +32,7 @@ public class sortVisual extends JPanel{
 		this.setBackground(Color.BLACK);
 		this.setVisible(true);
 		Init = true;
+		sortComplete = false;
 		rectInitFlag = false;
 		
 		img = new BufferedImage(WIDTH,HEIGHT,BufferedImage.TYPE_INT_RGB);
@@ -87,27 +89,55 @@ public class sortVisual extends JPanel{
 		return rectArray;
 	}
 	//paints the panel with updated rectangle objects
-	public void paintRect(rectangles[] r) {
+	public void paintRect() {
 		Graphics2D g = (Graphics2D) img.getGraphics();
 		g.clearRect(0, 0, WIDTH, HEIGHT);//clears screen
+		
 		//g.setColor(Color.BLACK);
 		//g.fillRect(0, 0, WIDTH, HEIGHT);
 		
-		for(int i=0;i<r.length;i++) {
-			g.setColor(Color.white);
+		for(int i=0;i<rectOnScreen.length;i++) {
+			g.setColor( rectOnScreen[i].getColor());
 			g.fillRect(
-					r[i].getX(), 
-					r[i].getY(), 
-					r[i].getWidth(), 
-					r[i].getHeight());
+					rectOnScreen[i].getX(), 
+					rectOnScreen[i].getY(), 
+					rectOnScreen[i].getWidth(), 
+					rectOnScreen[i].getHeight());
 			}
 			
 			g.dispose();
 			this.paintImmediately(0, 0, WIDTH, HEIGHT);
 	}
+	
+	
+	public void sortCompleteAnimation() {
+		Graphics2D g = (Graphics2D) img.getGraphics();
+		
+		for(int i=0;i<rectOnScreen.length;i++) {
+			g.setColor(Color.green);
+			g.fillRect(
+					rectOnScreen[i].getX(), 
+					rectOnScreen[i].getY(), 
+					rectOnScreen[i].getWidth(), 
+					rectOnScreen[i].getHeight());
+			/*
+			try {
+				Thread.sleep(20);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			*/
+			this.paintImmediately(0, 0, WIDTH, HEIGHT);
+			
+			}
+			g.dispose();
+	}
+	
+	
 	public void initRectPanel(int howMany) {
 		rectOnScreen = rectArrayInit(howMany);//creates rectangles array
-		paintRect(rectOnScreen);//paints with the given array
+		paintRect();//paints with the given array
 	}
 	
 	protected void quickSort() {
@@ -141,17 +171,14 @@ public class sortVisual extends JPanel{
 		return begin;
 	}*/
 	
-	private int partition (rectangles arr[], int low, int high) 
-	{ 
+	private int partition (rectangles arr[], int low, int high) { 
 	    int pivot = arr[high].getValue();    // pivot 
 	    int i = (low - 1);  // Index of smaller element 
 	  
-	    for (int j = low; j <= high- 1; j++) 
-	    { 
+	    for (int j = low; j <= high- 1; j++) { 
 	        // If current element is smaller than or 
 	        // equal to pivot 
-	        if (arr[j].getValue() <= pivot) 
-	        { 
+	        if (arr[j].getValue() <= pivot) { 
 	            i++;    // increment index of smaller element 
 	            swapRect(i,j); 
 	        } 
@@ -167,9 +194,15 @@ public class sortVisual extends JPanel{
 	}
 
 	private void swapRect(int i, int j) {
+		rectOnScreen[i].setColor(Color.RED);
+		paintRect();
+		rectOnScreen[j].setColor(Color.GREEN);
 		rectangles.swap(rectOnScreen,i,j);
 		//Thread.sleep(1);
-		paintRect(rectOnScreen);
+		paintRect();
+		rectOnScreen[i].setColor(Color.white);
+		rectOnScreen[j].setColor(Color.white);
+		paintRect();
 	}
 	protected void iterativeBubbleSort() throws InterruptedException {
 		
@@ -186,8 +219,10 @@ public class sortVisual extends JPanel{
 		recursiveBubbleSort(rectOnScreen,rectOnScreen.length);
 	}
 	protected void recursiveBubbleSort(rectangles[] arr, int howMany) {
-		if(howMany == 1)
+		if(howMany == 1) {
+			
 			return;
+		}
 		for(int i = 0; i < howMany-1; i++) {
 			if(arr[i].getValue() > arr[i+1].getValue()) {
 				swapRect(i,i+1);
@@ -195,15 +230,29 @@ public class sortVisual extends JPanel{
 		}
 		recursiveBubbleSort(arr,howMany-1);
 	}
+	private void selectionSort(rectangles [] r,int left,int right) {
+		for(int i = left ; i < right; i++) {
+			int smallestIndex = i;
+			for(int j = i+1; j<right; j++) {
+				if(rectOnScreen[j].getValue()<=rectOnScreen[smallestIndex].getValue()) {
+					smallestIndex = j;
+				}
+			}
+			swapRect(i,smallestIndex);
+		}
+	}
 	protected void selectionSort() {
 		for(int i = 0; i < rectOnScreen.length - 1; i++) {
 			int smallestIndex = i;
 			for(int j = i+1; j<rectOnScreen.length; j++) {
-				if(rectOnScreen[j].getValue()<=rectOnScreen[smallestIndex].getValue())
+				if(rectOnScreen[j].getValue()<=rectOnScreen[smallestIndex].getValue()) {
 					smallestIndex = j;
+				}
 			}
+			
 			swapRect(i,smallestIndex);
 		}
+		
 	}
 	protected void iterativeInsertionSort() {
 		int sortedIndex;
@@ -215,13 +264,16 @@ public class sortVisual extends JPanel{
 				}
 			}
 		}
+		
 	}
 	protected void initRecursiveInsertionSort() {
 		recursiveInsertionSort(rectOnScreen,0);
+		
 	}
 	protected void recursiveInsertionSort(rectangles[] arr, int sortedIndex) {
-		if(sortedIndex == rectOnScreen.length)
+		if(sortedIndex == rectOnScreen.length) {
 			return;
+		}
 		for(int j = 0; j<sortedIndex; j++) {
 			if(arr[sortedIndex].getValue() <= arr[j].getValue()) {
 				swapRect(sortedIndex,j);
@@ -233,6 +285,7 @@ public class sortVisual extends JPanel{
 
 	protected void initMergeSort() {
 		mergeSort(rectOnScreen,0,rectOnScreen.length - 1);
+		
 	}
 	protected void mergeSort(rectangles[] arr, int begin, int end) {
 		if(begin < end) {
@@ -288,13 +341,13 @@ public class sortVisual extends JPanel{
 				
 				index2++;
 			}
-			paintRect(rectOnScreen);
+			paintRect();
 			
 		}
 	}
 
-	/*
-	private void merges(rectangles arr[], int l, int m, int r)
+	
+	private void timMerge(rectangles arr[], int l, int m, int r)
 	{
 	    // original array is broken in two parts
 	    // left and right array
@@ -321,12 +374,12 @@ public class sortVisual extends JPanel{
 	    while (i < len1 && j < len2) {
 	        if (left[i].getValue() <= right[j].getValue()) {
 	            rectangles.swapRectComponent(arr, left, k, i);
-	            paintRect(rectOnScreen);
+	            paintRect();
 	            i++;
 	        }
 	        else {
 	            rectangles.swapRectComponent(arr, right, k, j);
-	            paintRect(rectOnScreen);
+	            paintRect();
 	            j++;
 	        }
 	        k++;
@@ -335,7 +388,7 @@ public class sortVisual extends JPanel{
 	    // copy remaining elements of left, if any
 	    while (i < len1) {
 	    	rectangles.swapRectComponent(arr, left, k, i);
-	    	paintRect(rectOnScreen);
+	    	paintRect();
 	        k++;
 	        i++;
 	    }
@@ -343,35 +396,38 @@ public class sortVisual extends JPanel{
 	    // copy remaining element of right, if any
 	    while (j < len2) {
 	    	rectangles.swapRectComponent(arr, right, k, j);
-	    	paintRect(rectOnScreen);
+	    	paintRect();
 	        k++;
 	        j++;
 	    }
-	}*/
-	
-	private void timSort(int arr[], int n) {
+	}
+	public void timSort() {
+		timSort(rectOnScreen);
+	}
+	private void timSort(rectangles arr[]) {
 		int RUN = 32;
-		 for (int i = 0; i < n; i+=RUN) {
-			 	int min = (i+31) > (n-1) ? (n-1) : (i+31);
-		        //iterativeInsertionSort(arr, i, min);
+		 for (int i = 0; i < arr.length; i+=RUN) {
+			 	int min = (i+31) > (arr.length-1) ? (arr.length-1) : (i+31);
+		        selectionSort(arr, i, min);
 		 }
 		    // start merging from size RUN (or 32). It will merge
 		    // to form size 64, then 128, 256 and so on ....
-		    for (int size = RUN; size < n; size = 2*size)
+		    for (int size = RUN; size < arr.length; size = 2*size)
 		    {
 		        // pick starting point of left sub array. We
 		        // are going to merge arr[left..left+size-1]
 		        // and arr[left+size, left+2*size-1]
 		        // After every merge, we increase left by 2*size
-		        for (int left = 0; left < n; left += 2*size)
+		        for (int left = 0; left < arr.length-1; left += 2*size)
 		        {
 		            // find ending point of left sub array
 		            // mid+1 is starting point of right sub array
 		            int mid = left + size - 1;
-		            int right = (left + (2*size) - 1) < (n-1) ? (left + (2*size) - 1) : (n-1);
+		            int right = (left + 2*size) < (arr.length) ? (left + 2*size) : (arr.length);
 		            // merge sub array arr[left.....mid] &
 		            // arr[mid+1....right]
-		            merge(arr, left, mid, right);
+		            
+		            timMerge(arr, left, mid, right-1);
 		        }
 		    }
 	}

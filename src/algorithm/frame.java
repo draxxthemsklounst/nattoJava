@@ -73,7 +73,7 @@ public class frame extends JPanel implements ActionListener, FocusListener{
 		algoSelection.addActionListener(this);
 		this.add(algoSelection);
 		
-		String[] comboBoxSelection = {"Iterative Bubble Sort","Recursive Bubble Sort","Selection Sort","Iterative Insertion Sort","Recursive Insertion Sort","Merge Sort","Quick Sort"};
+		String[] comboBoxSelection = {"Iterative Bubble Sort","Recursive Bubble Sort","Selection Sort","Iterative Insertion Sort","Recursive Insertion Sort","Merge Sort","Quick Sort","Tim Sort"};
 		comboBox = new JComboBox<String>(comboBoxSelection);
 		comboBox.setSelectedIndex(0);
 		comboBox.addActionListener(this);
@@ -112,40 +112,50 @@ public class frame extends JPanel implements ActionListener, FocusListener{
         			case 0:
         				drawPanel.iterativeBubbleSort();
         				sortVisual.displayArray(drawPanel.getRectArray());
+        				drawPanel.sortCompleteAnimation();
         				repaint();
         				break;
         			case 1: 
         				drawPanel.initRecursiveBubbleSort();
         				sortVisual.displayArray(drawPanel.getRectArray());
+        				drawPanel.sortCompleteAnimation();
         				repaint();
         				break;
         			case 2:
         				drawPanel.selectionSort();
         				sortVisual.displayArray(drawPanel.getRectArray());
+        				drawPanel.sortCompleteAnimation();
         				repaint();
         				break;
         			case 3:
         				drawPanel.iterativeInsertionSort();
         				sortVisual.displayArray(drawPanel.getRectArray());
+        				drawPanel.sortCompleteAnimation();
         				repaint();
         				break;
         			case 4:
         				drawPanel.initRecursiveInsertionSort();
         				sortVisual.displayArray(drawPanel.getRectArray());
+        				drawPanel.sortCompleteAnimation();
         				break;
         			case 5:
         				drawPanel.initMergeSort();
         				sortVisual.displayArray(drawPanel.getRectArray());
+        				drawPanel.sortCompleteAnimation();
         				break;
         			case 6:
         				drawPanel.quickSort();
         				sortVisual.displayArray(drawPanel.getRectArray());
+        				drawPanel.sortCompleteAnimation();
         				break;
         			case 7:
+        				drawPanel.timSort();
         				sortVisual.displayArray(drawPanel.getRectArray());
+        				drawPanel.sortCompleteAnimation();
         				break;
         			case 8:
         				sortVisual.displayArray(drawPanel.getRectArray());
+        				drawPanel.sortCompleteAnimation();
         				break;
         			default:
         				System.out.println("Please select a valid Sorting Algorithm. ");

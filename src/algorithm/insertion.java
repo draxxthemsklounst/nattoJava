@@ -16,7 +16,7 @@ public class insertion {
 		JFrame window = new JFrame();
 		window.add(f);
 		window.setContentPane(f);
-		window.setTitle("Search Algorithm GUI");
+		window.setTitle("Visual Algorithm and GUI Project (natto)");
 		window.getContentPane().setPreferredSize(new Dimension(1280,720));
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
