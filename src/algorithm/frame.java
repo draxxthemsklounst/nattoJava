@@ -116,7 +116,7 @@ public class frame extends JPanel implements ActionListener, FocusListener{
         				repaint();
         				break;
         			case 1: 
-        				drawPanel.initRecursiveBubbleSort();
+        				drawPanel.recursiveBubbleSort();
         				sortVisual.displayArray(drawPanel.getRectArray());
         				drawPanel.sortCompleteAnimation();
         				repaint();
@@ -134,12 +134,12 @@ public class frame extends JPanel implements ActionListener, FocusListener{
         				repaint();
         				break;
         			case 4:
-        				drawPanel.initRecursiveInsertionSort();
+        				drawPanel.recursiveInsertionSort();
         				sortVisual.displayArray(drawPanel.getRectArray());
         				drawPanel.sortCompleteAnimation();
         				break;
         			case 5:
-        				drawPanel.initMergeSort();
+        				drawPanel.mergeSort();
         				sortVisual.displayArray(drawPanel.getRectArray());
         				drawPanel.sortCompleteAnimation();
         				break;

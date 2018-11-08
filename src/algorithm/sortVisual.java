@@ -215,7 +215,7 @@ public class sortVisual extends JPanel{
 		}
 		
 	}
-	protected void initRecursiveBubbleSort() {
+	protected void recursiveBubbleSort() {
 		recursiveBubbleSort(rectOnScreen,rectOnScreen.length);
 	}
 	protected void recursiveBubbleSort(rectangles[] arr, int howMany) {
@@ -266,7 +266,7 @@ public class sortVisual extends JPanel{
 		}
 		
 	}
-	protected void initRecursiveInsertionSort() {
+	protected void recursiveInsertionSort() {
 		recursiveInsertionSort(rectOnScreen,0);
 		
 	}
@@ -283,7 +283,7 @@ public class sortVisual extends JPanel{
 		recursiveInsertionSort(arr, sortedIndex);
 	}
 
-	protected void initMergeSort() {
+	protected void mergeSort() {
 		mergeSort(rectOnScreen,0,rectOnScreen.length - 1);
 		
 	}
@@ -301,14 +301,14 @@ public class sortVisual extends JPanel{
 		rectangles half2 [] = new rectangles[end-middle];
 		
 		int index1 = 0;
-		for(int i = begin; i < middle+1; i++) { //copying first half and second half into the clones
+		for(int i = begin; i < middle; i++) { //copying first half and second half into the clones
 			//half1[index1] = arr[i];
 			half1[index1] = new rectangles();
 	    	rectangles.swapRectComponent(half1, arr, index1, i);
 			index1++;
 		}
 		int index2 = 0;
-		for(int j = middle+1; j < end+1; j++) {
+		for(int j = begin+middle+1; j < end+1; j++) {
 			//half2[index2] = arr[j];
 			half2[index2] = new rectangles();
 	    	rectangles.swapRectComponent(half2, arr, index2, j);
@@ -412,22 +412,22 @@ public class sortVisual extends JPanel{
 		 }
 		    // start merging from size RUN (or 32). It will merge
 		    // to form size 64, then 128, 256 and so on ....
-		    for (int size = RUN; size < arr.length; size = 2*size)
+		    for (int size = RUN; size < arr.length; size *= 2)
 		    {
 		        // pick starting point of left sub array. We
 		        // are going to merge arr[left..left+size-1]
 		        // and arr[left+size, left+2*size-1]
 		        // After every merge, we increase left by 2*size
-		        for (int left = 0; left < arr.length-1; left += 2*size)
+		        for (int left = 0; left < arr.length; left += 2*size)
 		        {
 		            // find ending point of left sub array
 		            // mid+1 is starting point of right sub array
 		            int mid = left + size - 1;
-		            int right = (left + 2*size) < (arr.length) ? (left + 2*size) : (arr.length);
+		            int right = (left + 2*size - 1) < (arr.length - 1) ? (left + 2*size - 1) : (arr.length - 1);
 		            // merge sub array arr[left.....mid] &
 		            // arr[mid+1....right]
 		            
-		            timMerge(arr, left, mid, right-1);
+		            timMerge(arr, left, mid, right);
 		        }
 		    }
 	}
